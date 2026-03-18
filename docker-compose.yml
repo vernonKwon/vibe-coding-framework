@@ -1,0 +1,21 @@
+services:
+  refactor-agent:
+    build: .
+    container_name: refactor-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - JAVA_HOME=/opt/java/openjdk
+      - NODE_PATH=/usr/lib/node_modules
+    volumes:
+      # 워크스페이스 루트를 단일 마운트 (projects.json의 workspace_root에 대응)
+      - ..:/workspace:ro
+      # 에이전트 코드는 읽기/쓰기 (로그, .workspace/ 등)
+      - .:/app
+      # 로그 영속화
+      - ./logs:/var/log/refactor-agent
+      # Claude Code OAuth 세션 공유 (호스트에서 claude login 후 사용)
+      - ~/.claude:/root/.claude:ro
+      # Git SSH 키 공유 (읽기 전용)
+      - ~/.ssh:/root/.ssh:ro

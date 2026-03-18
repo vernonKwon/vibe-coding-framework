@@ -1,0 +1,10 @@
+{
+  "workspace_root": "..",
+  "projects": {
+    "my-backend": "my-backend-repo",
+    "my-frontend": "my-frontend-repo"
+  },
+  "groups": {
+    "fullstack": ["my-backend", "my-frontend"]
+  }
+}

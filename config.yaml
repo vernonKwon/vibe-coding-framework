@@ -1,0 +1,21 @@
+# =============================================================================
+# Refactor Agent - Global Configuration
+# =============================================================================
+# 파이프라인 전역 설정만 관리한다.
+# 프로젝트/그룹/서비스 정의는 projects.json을 참조.
+
+global:
+  # 에이전트가 생성하는 PR/Issue의 공통 설정
+  max_retry_on_test_fail: 3          # 테스트 실패 시 Resolver 재시도 횟수
+  pr_mode: "draft"                    # draft | ready (항상 draft 권장)
+  issue_duplicate_check: true         # 동일 제목 이슈 중복 생성 방지
+  schedule_cron: "0 22 * * *"         # 매일 22:00 실행
+
+  # Label 컨벤션 (에이전트 간 상태 전달)
+  labels:
+    consultant_created: "tech-debt"
+    needs_architect_review: "needs-review"
+    ready_to_fix: "ready-to-fix"
+    in_progress: "in-progress"
+    fix_failed: "fix-failed"
+    completed: "completed"

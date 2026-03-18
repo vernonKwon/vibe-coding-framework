@@ -1,0 +1,16 @@
+# 프로젝트가 의존하는 공유 인프라를 정의한다.
+# .workspace.yaml의 service.dependencies에 서비스 이름을 적으면 자동 시작된다.
+#
+# 예시:
+#   services:
+#     rabbitmq:
+#       image: rabbitmq:4-management-alpine
+#       ports:
+#         - "5672:5672"
+#         - "15672:15672"
+#     redis:
+#       image: redis:7-alpine
+#       ports:
+#         - "6379:6379"
+
+services: {}

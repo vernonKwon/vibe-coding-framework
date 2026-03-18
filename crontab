@@ -1,0 +1,12 @@
+# Refactor Agent Cron Schedule
+# entrypoint.sh가 환경변수를 /etc/environment에 기록하므로
+# 각 job에서 source하여 GITHUB_TOKEN, ANTHROPIC_API_KEY 등을 사용한다.
+# 스케줄은 프로젝트에 맞게 수정할 것.
+
+SHELL=/bin/bash
+
+# 매일 22:00 - 전체 파이프라인 실행
+0 22 * * * . /etc/environment; cd /app && pipenv run python -m scripts.main --all >> /var/log/refactor-agent/cron.log 2>&1
+
+# 매일 06:00 - Architect만 실행 (밤새 수동 생성된 이슈 처리)
+0 6 * * * . /etc/environment; cd /app && pipenv run python -m scripts.main --architect >> /var/log/refactor-agent/cron.log 2>&1
