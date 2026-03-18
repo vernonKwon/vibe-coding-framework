@@ -16,11 +16,49 @@
 # 1. 환경변수 설정
 cp .env.example .env
 # .env에 GITHUB_TOKEN 입력
-# Claude Code는 OAuth(Max 구독) 또는 ANTHROPIC_API_KEY 중 선택
 
 # 2. Python 의존성
 pipenv install
 ```
+
+## Claude Code 인증
+
+두 가지 방법 중 선택:
+
+### 방법 1: OAuth (Max 구독, 권장)
+
+```bash
+# 호스트에서 한 번만 실행 — 브라우저로 Google/Gmail 로그인
+claude login
+```
+
+로그인하면 `~/.claude/`에 세션이 저장된다.
+- **로컬 실행** → 그대로 동작
+- **Docker 실행** → `docker-compose.yml`이 `~/.claude:/root/.claude:ro`로 세션을 컨테이너에 마운트
+
+**중요**: `.env`에서 `ANTHROPIC_API_KEY`를 설정하지 않아야 OAuth 세션이 사용된다. 두 값이 동시에 존재하면 API 키가 우선되어 토큰당 과금이 발생한다.
+
+```bash
+# .env 확인 — ANTHROPIC_API_KEY 줄이 없거나 주석처리되어 있어야 함
+# ANTHROPIC_API_KEY=sk-ant-...  ← 이렇게 주석처리
+```
+
+### 방법 2: API Key (토큰당 과금)
+
+```bash
+# .env에 추가
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+API 키가 설정되면 OAuth 세션 유무와 관계없이 항상 API 키로 동작한다.
+
+### 인증 우선순위 요약
+
+| `.env`에 ANTHROPIC_API_KEY | `~/.claude/` 세션 | 결과 |
+|---|---|---|
+| 설정함 | 있음/없음 | API Key 사용 (토큰당 과금) |
+| 설정 안 함 | 있음 | OAuth 사용 (Max 구독 quota) |
+| 설정 안 함 | 없음 | 인증 실패 |
 
 ## 초기 셋업 순서
 
